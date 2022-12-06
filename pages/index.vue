@@ -3,9 +3,9 @@
     <div>
       <div class="flex flex-col items-center py-5 justify-center">
         <h2
-          class="font-heading text-3xl font-bold leading-normal mt-0 mb-2 text-gray-700"
+          class="font-heading text-3xl font-bold leading-normal mt-0 mb-2 text-primary"
         >
-          Age Calculator : How to Calculate age
+          Nuxt Calculator
         </h2>
       </div>
       <div class="flex flex-1 flex-col items-center justify-center">
@@ -52,3 +52,4 @@
     </div>
   </div>
 </template>
+<script setup></script>

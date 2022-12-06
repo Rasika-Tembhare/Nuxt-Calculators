@@ -3,7 +3,7 @@ export default defineNuxtConfig({
   modules: ["@nuxtjs/tailwindcss"],
   app: {
     head: {
-      title: "Nuxt Age Calculator",
+      title: "Nuxt Calculator",
       meta: [{ name: "description", content: "Calculator" }],
     },
   },

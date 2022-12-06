@@ -1,48 +1,119 @@
 <template>
-  <div>
-    <h1 class="text-center text-3xl font-bold py-4">Age Calculator</h1>
-    <main>
-      <div class="flex flex-col items-center justify-center">
-        <form action="" @submit.prevent="ageCalculate">
-          <div class="py-3">
-            <label for="dob">Date Of Birth</label>
-            <input
-              v-model="dob"
-              type="date"
-              placeholder="Type here"
-              class="input input-bordered w-full max-w-xs"
-            />
-          </div>
-          <div class="py-3">
-            <label for="">Age at Date </label>
-            <input
-              v-model="today"
-              type="date"
-              placeholder="Type here"
-              class="input input-bordered w-full max-w-xs"
-            />
-          </div>
+  <div class="flex flex-1 flex-col items-center justify-center">
+    <!-- heading -->
 
-          <button
-            type="submit"
-            class="btn mt-5 mb-2 w-full max-w-xs"
-            @click="ageCalculate"
-          >
-            Calculate
-          </button>
-        </form>
-        <button
-          v-if="showResult"
-          value="clear"
-          class="btn btn-outline mt-5 mb-2 w-64 max-w-xs"
-          @click="resetInput"
-        >
-          Reset
-        </button>
+    <div class="flex flex-col items-center justify-center">
+      <h1
+        class="font-heading text-4xl font-bold leading-normal mt-0 mb-2 text-primary"
+      >
+        Age Calculator
+      </h1>
+    </div>
+
+    <!-- form start here -->
+
+    <main>
+      <div class="card w-96 bg-base-100 shadow-xl">
+        <div class="card-body">
+          <div class="flex flex-col items-center justify-center">
+            <form action="" @submit.prevent="ageCalculate">
+              <div class="py-3">
+                <label for="dob">Date Of Birth</label>
+                <input
+                  v-model="dob"
+                  type="date"
+                  placeholder="Type here"
+                  class="input input-bordered input-primary w-full max-w-xs"
+                  required
+                />
+              </div>
+              <div class="py-3">
+                <label for="">Age at Date </label>
+                <input
+                  v-model="today"
+                  type="date"
+                  placeholder="Type here"
+                  class="input input-bordered input-primary w-full max-w-xs"
+                  required
+                />
+              </div>
+              <div class="card-actions">
+                <button
+                  type="submit"
+                  class="btn btn-primary mt-5 mb-2 w-full max-w-xs"
+                  @click="ageCalculate"
+                >
+                  Calculate
+                </button>
+              </div>
+            </form>
+            <button
+              v-if="showResult"
+              value="clear"
+              class="btn btn-primary btn-outline mt-5 mb-2 w-64 max-w-xs"
+              @click="resetInput"
+            >
+              Reset
+            </button>
+          </div>
+        </div>
       </div>
 
-      <div v-if="showResult" class="text-center flex flex-col items-center">
-        <p class="my-2 text-lg">Your age is</p>
+      <!-- Result Card -->
+      <div
+        v-if="showResult"
+        class="text-center flex flex-col items-center py-5"
+      >
+        <div class="card w-96 bg-base-100 shadow-xl">
+          <div class="card-body">
+            <h2 class="card-title">Your Age is</h2>
+            <p class="text-primary text-xl font-semibold">
+              {{ diffYear }} years {{ m }} months {{ d }} days
+            </p>
+            <div class="overflow-x-auto">
+              <table class="table w-full">
+                <!-- head -->
+                <!-- <thead>
+                  <tr>
+                    <th>You Lived</th>
+                    <th></th>
+                  </tr>
+                </thead> -->
+                <tbody>
+                  <!-- row 1 -->
+                  <tr>
+                    <td>In days</td>
+                    <td>{{ diffDays }} days</td>
+                  </tr>
+                  <!-- row 2 -->
+                  <tr>
+                    <td>In Months</td>
+                    <td>{{ diffMonth }} months {{ d }} days</td>
+                  </tr>
+                  <!-- row 3 -->
+                  <tr>
+                    <td>In Weeks</td>
+                    <td>{{ weeks }} weeks {{ remDay }} days</td>
+                  </tr>
+                  <tr>
+                    <td>In Hours</td>
+                    <td>{{ hour }} hours</td>
+                  </tr>
+                  <tr>
+                    <td>In Minutes</td>
+                    <td>{{ minutes }} minutes</td>
+                  </tr>
+                  <tr>
+                    <td>In Seconds</td>
+                    <td>{{ seconds }} seconds</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- <p class="my-2 text-lg">Your age is</p>
         <p>{{ diffYear }} years {{ m }} months {{ d }} days</p>
         <p class="my-1">or</p>
         <p>{{ diffMonth }} months {{ d }} days</p>
@@ -55,15 +126,21 @@
         <p class="my-1">or</p>
         <p>{{ minutes }} minutes</p>
         <p class="my-1">or</p>
-        <p>{{ seconds }} seconds</p>
+        <p>{{ seconds }} seconds</p> -->
       </div>
     </main>
+
+    <AgeContent />
   </div>
 </template>
 
 <script setup lang="ts">
 import dayjs from "dayjs";
 console.log(dayjs().format());
+useHead({
+  title: "Nuxt|Age Calculator",
+  meta: [{ name: "description", content: "Age calculator" }],
+});
 
 const dob = ref("");
 const today = ref("");
@@ -87,7 +164,9 @@ function ageCalculate() {
   console.log(date1);
   const date2 = dayjs(today.value);
   console.log(date2);
-  showResult.value = true;
+  if (dob.value !== "" && today.value !== "") {
+    showResult.value = true;
+  }
 
   // Calculation of all difference in year, month...to seconds
   diffYear.value = date2.diff(date1, "year");
@@ -134,73 +213,6 @@ function ageCalculate() {
     console.log(d.value);
   }
 }
-
-// function ageCalculate() {
-
-//   //convert user input in date  object.
-//   const startDate = new Date(dob.value);
-//   const endDate = new Date(today.value);
-//   console.log(startDate);
-//   console.log(endDate);
-
-//   // extract the year, month,date  from user input.
-//   const dobYear = startDate.getFullYear();
-//   const dobMonth = startDate.getMonth() + 1;
-//   const dobDate = startDate.getDate();
-//   console.log("year", dobYear);
-
-//   const todayYear = endDate.getFullYear();
-//   const todayMonth = endDate.getMonth() + 1;
-//   const todayDate = endDate.getDate();
-//   console.log("year", todayYear);
-
-//   showResult.value = true;
-
-//   if (
-//     dobYear > todayYear ||
-//     (dobMonth > todayMonth && dobYear === todayYear) ||
-//     (dobDate > todayDate && dobMonth === todayMonth && dobYear === todayYear)
-//   ) {
-//     alert("Must be Born!");
-//     return;
-//   }
-//   //for years
-//   diffYear.value = todayYear - dobYear;
-//   console.log(diffYear.value);
-
-//   // for months
-//   if (todayMonth >= dobMonth) {
-//     diffMonth.value = todayMonth - dobMonth;
-//     console.log(diffMonth.value);
-//   } else {
-//     diffYear.value--;
-//     diffMonth.value = 12 + todayMonth - dobMonth;
-//     console.log(diffMonth.value);
-//   }
-
-//   //for date.
-//   if (todayDate >= dobDate) {
-//     diffDate.value = todayDate - dobDate;
-//     console.log(diffDate.value);
-//   } else {
-//     diffMonth.value--;
-//     // const days = daysInMonth(dobMonth,dobYear)
-//     diffDate.value = 31 + todayDate - dobDate;
-//     if (diffMonth.value < 0) {
-//       diffMonth.value = 11;
-//       diffYear.value--;
-//     }
-//     console.log(diffDate.value);
-//   }
-//   y.value = diffYear.value;
-//   m.value = diffMonth.value + diffYear.value * 12;
-//   d.value = diffDate.value + m.value * 30;
-//   weeks.value = Math.floor(d.value / 7);
-//   rem.value = d.value % 7;
-//   hour.value = d.value * 24;
-//   minutes.value = hour.value * 60;
-//   seconds.value = minutes.value * 60;
-// }
 function resetInput() {
   dob.value = "";
   today.value = "";
